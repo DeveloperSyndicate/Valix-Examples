@@ -21,14 +21,23 @@ The `micronaut-example` module showcases how Valix integrates into modern cloud-
 
 ---
 
-## 3. Real-Time Performance Benchmarks
+## 3. Android Integration Example (`android-example`)
 
-To illustrate the latency and throughput benefits of Valix compile-time generated validators over reflection-based JSR-380 validation (e.g. Hibernate Validator), real-time JUnit benchmarks are included in both example subprojects.
+The `android-example` module showcases how Valix provides extremely lightweight, fast validation in client-side mobile applications:
+- **Compose UI Integration:** Using Jetpack Compose dynamic form input validation with the `valix-compose` state utilities (e.g. `rememberValixForm`).
+- **Zero Reflection Overhead:** Ideal for Android environments where reflection overhead directly degrades app startup latency and UI response time.
+- **On-Device & Unit Benchmarking:** Includes a benchmark suite that runs both on-device (via Compose UI activity) and on-host JVM (via Gradle tests).
+
+---
+
+## 4. Real-Time Performance Benchmarks
+
+To illustrate the latency and throughput benefits of Valix compile-time generated validators over reflection-based JSR-380 validation (e.g. Hibernate Validator), real-time JUnit benchmarks are included in all example subprojects.
 
 ### Benchmark Configuration
 - **Iterations per Run:** 100,000 payload validations (mix of valid and invalid request instances).
 - **Sequential Runs:** 10 sequential execution runs to compute an average time and throughput.
-- **Parallel Runs:** 10 concurrent threads executing 100,000 validations simultaneously (simulating multi-threaded web server workloads).
+- **Parallel Runs:** 10 concurrent threads executing 100,000 validations simultaneously (simulating multi-threaded workloads).
 
 ### Performance Results
 
@@ -50,6 +59,15 @@ To illustrate the latency and throughput benefits of Valix compile-time generate
 
 * **Micronaut Parallel (10 Threads):** Valix was **5.28x Faster** with **14,705,882 ops/sec** vs JSR-380's **2,785,515 ops/sec**.
 
+#### C. Android Benchmark Results (10 Run Average - JVM Host Mode)
+
+| Framework | Average Time (ms) | Throughput (ops/sec) | Speed Improvement |
+| --- | --- | --- | --- |
+| **Valix** | **20.90 ms** | **4,784,688** | **7.19x Faster** |
+| JSR-380 (Hibernate) | 150.30 ms | 665,335 | Baseline |
+
+* **Android Parallel (10 Threads):** Valix was **3.76x Faster** with **15,151,515 ops/sec** vs JSR-380's **4,032,258 ops/sec**.
+
 > [!NOTE]
 > Since Valix generates plain Kotlin validation statements directly at compile-time, it completely bypasses runtime annotation parsing, reflection lookup, and metadata caches. This provides massive performance benefits even under heavy parallel load.
 
@@ -65,4 +83,7 @@ Execute the following commands in your terminal from the repository root:
 
 # Run Micronaut benchmark
 ./gradlew cleanTest :micronaut-example:test --info
+
+# Run Android benchmark (JVM mode)
+./gradlew cleanTest :android-example:testDebugUnitTest --info
 ```

@@ -1,11 +1,13 @@
 pluginManagement {
     repositories {
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
     repositories {
+        google()
         mavenCentral()
     }
 }
@@ -17,3 +19,4 @@ rootProject.name = "Valix-Example"
 includeBuild("/Users/sanjay/Documents/VibeCode/Valix")
 include(":spring-example")
 include(":micronaut-example")
+include(":android-example")
