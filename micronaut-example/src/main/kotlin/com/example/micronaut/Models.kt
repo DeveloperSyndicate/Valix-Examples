@@ -1,0 +1,47 @@
+package com.example.micronaut
+
+import io.valix.annotations.Email
+import io.valix.annotations.Min
+import io.valix.annotations.NotBlank
+import io.valix.annotations.NotNull
+import jakarta.validation.constraints.Min as JsrMin
+import jakarta.validation.constraints.NotBlank as JsrNotBlank
+import jakarta.validation.constraints.NotNull as JsrNotNull
+import jakarta.validation.constraints.Email as JsrEmail
+import io.micronaut.core.annotation.Introspected
+
+/**
+ * Domain model representing a user creation request, validated at compile-time by Valix.
+ */
+@Introspected
+data class CreateUserRequest(
+    @NotNull
+    @NotBlank
+    val username: String?,
+
+    @NotNull
+    @Email
+    val email: String?,
+
+    @NotNull
+    @Min(18)
+    val age: Int?
+)
+
+/**
+ * Domain model representing the same user creation request, validated at runtime by Hibernate Validator (JSR-380).
+ */
+@Introspected
+data class CreateUserRequestJsr(
+    @field:JsrNotNull
+    @field:JsrNotBlank
+    val username: String?,
+
+    @field:JsrNotNull
+    @field:JsrEmail
+    val email: String?,
+
+    @field:JsrNotNull
+    @field:JsrMin(18)
+    val age: Int?
+)
