@@ -32,3 +32,4 @@ replay_pid*
 /micronaut-example/build
 /spring-example/build
 /android-example/build
+/ktor-example/build

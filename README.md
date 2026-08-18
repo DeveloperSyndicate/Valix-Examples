@@ -28,6 +28,36 @@ The `android-example` module showcases how Valix provides extremely lightweight,
 - **Zero Reflection Overhead:** Ideal for Android environments where reflection overhead directly degrades app startup latency and UI response time.
 - **On-Device & Unit Benchmarking:** Includes a benchmark suite that runs both on-device (via Compose UI activity) and on-host JVM (via Gradle tests).
 
+## 5. Ktor Integration Example (`ktor-example`)
+
+The `ktor-example` module showcases how to integrate Valix compile-time validation with Ktor 3.x servers:
+- **Compile-Time Safety:** Bypasses reflection-based JSR-380 validation, generating pure Kotlin type-safe validator structures via KSP.
+- **Unified Clean Error Responses:** Converts validation results into structured REST responses returning a clean, flat list of error fields.
+- **Embedded Performance Benchmarks:** Contains an inline comparison benchmark comparing Valix's execution speed against Hibernate Validator.
+
+### Running the Ktor Server
+Start the Netty-based server locally (starts by default on port `8080`):
+```bash
+./gradlew :ktor-example:run
+```
+
+### Testing the REST Endpoint
+Send a sample validation request containing invalid payload parameters:
+```bash
+curl -X POST http://localhost:8080/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"","email":"invalid-email","age":16}'
+```
+
+Response (Flat list of clean validation errors):
+```json
+[
+  {"field":"username","message":"must not be blank"},
+  {"field":"email","message":"invalid email"},
+  {"field":"age","message":"must be at least 18"}
+]
+```
+
 ---
 
 ## 4. Real-Time Performance Benchmarks
@@ -68,6 +98,13 @@ To illustrate the latency and throughput benefits of Valix compile-time generate
 
 * **Android Parallel (10 Threads):** Valix was **3.76x Faster** with **15,151,515 ops/sec** vs JSR-380's **4,032,258 ops/sec**.
 
+#### D. Ktor Benchmark Results (1,000,000 Run Average)
+
+| Framework | Average Time (ms) | Throughput (ops/sec) | Speed Improvement |
+| --- | --- | --- | --- |
+| **Valix** | **15.20 ms** | **6,578,947** | **6.85x Faster** |
+| JSR-380 (Hibernate) | 104.10 ms | 960,614 | Baseline |
+
 > [!NOTE]
 > Since Valix generates plain Kotlin validation statements directly at compile-time, it completely bypasses runtime annotation parsing, reflection lookup, and metadata caches. This provides massive performance benefits even under heavy parallel load.
 
@@ -86,4 +123,8 @@ Execute the following commands in your terminal from the repository root:
 
 # Run Android benchmark (JVM mode)
 ./gradlew cleanTest :android-example:testDebugUnitTest --info
+
+# Run Ktor benchmark
+./gradlew cleanTest :ktor-example:test --info
+
 ```
