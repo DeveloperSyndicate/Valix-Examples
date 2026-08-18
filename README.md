@@ -66,6 +66,7 @@ The `:android-example` contains a Compose UI application displaying validation s
 ## 4. Documentation & Benchmarks
 
 * **[Performance Benchmarks & Methodology](BENCHMARKS.md):** Detailed results comparing Valix against JSR-380 (Hibernate Validator) across JVM runtimes, parallel execution loads, and GraalVM Native environments.
+* **[Medium Article: Can Compile-Time Generated Validation Really Be Faster?](https://medium.com/@imsaba16/can-compile-time-generated-validation-really-be-faster-f2d659c06040):** Detailed analysis of Valix integration examples and benchmark results.
 * **[Valix Core Repository](https://github.com/developersyndicate/valix):** Main compiler package, issues tracker, and release updates.
 
 ---
