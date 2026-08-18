@@ -1,5 +1,9 @@
 # Valix Integration Examples
 
+<p align="center">
+  <img src="images/logo.png" alt="Valix Logo" width="160px">
+</p>
+
 [![Build Status](https://github.com/developersyndicate/valix-examples/actions/workflows/ci.yml/badge.svg)](https://github.com/developersyndicate/valix-examples/actions/workflows/ci.yml)
 
 Runnable examples showing how to integrate the **Valix** compile-time generated validation framework with popular Kotlin application environments.
