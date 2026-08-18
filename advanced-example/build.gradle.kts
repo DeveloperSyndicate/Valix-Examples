@@ -25,6 +25,9 @@ dependencies {
     // Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation(kotlin("test"))
+    testImplementation("jakarta.validation:jakarta.validation-api:3.0.2")
+    testImplementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
+    testImplementation("org.glassfish:jakarta.el:4.0.2") // Expression Language impl required for Hibernate Validator
 }
 
 application {

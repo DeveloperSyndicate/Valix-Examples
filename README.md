@@ -167,6 +167,15 @@ Validates the startup execution characteristics of the `advanced-example` module
 > [!TIP]
 > GraalVM Native compilation traditionally requires complex reflection registry configurations (`reflect-config.json`) to register target entities validated by Hibernate / reflection-based validation libraries. Because Valix compile-time generated validators execute as direct, reflection-free Kotlin statements, it compiles natively with **zero configuration** and starts instantly.
 
+#### G. Nested Entity Graph Benchmarks (50,000 Run Average)
+
+Measures validation performance on complex, deeply nested models containing child collections (e.g. `OrderRequest` containing `Address` and `List<OrderItem>` targets):
+
+| Framework | Average Time (ms) | Throughput (ops/sec) | Speed Improvement |
+| --- | --- | --- | --- |
+| **Valix** | **19.40 ms** | **2,577,319** | **15.96x Faster** |
+| JSR-380 (Hibernate) | 309.60 ms | 161,498 | Baseline |
+
 > [!NOTE]
 > Since Valix generates plain Kotlin validation statements directly at compile-time, it completely bypasses runtime annotation parsing, reflection lookup, and metadata caches. This provides massive performance benefits even under heavy parallel load.
 
@@ -189,7 +198,11 @@ Execute the following commands in your terminal from the repository root:
 # Run Ktor benchmark
 ./gradlew cleanTest :ktor-example:test --info
 
+# Run Nested Object Graph Benchmark
+./gradlew cleanTest :advanced-example:test --info
+
 # Run GraalVM Native Cold-Start Timing Benchmark
 ./advanced-example/benchmark-native.sh
+
 
 ```
