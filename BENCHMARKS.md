@@ -18,7 +18,7 @@ To ensure high-precision reproducibility, all benchmarks are executed under the 
   * **CPU:** Apple M2 Pro (10 Cores, 8 Performance, 2 Efficiency)
   * **Memory:** 16 GB Unified RAM
   * **JDK Runtime:** Eclipse Adoptium OpenJDK 17.0.20+8
-  * **Target versions:** Valix `1.0.4`, Hibernate Validator `8.0.1.Final`
+  * **Target versions:** Valix `1.0.5`, Hibernate Validator `8.0.1.Final`
   * **Garbage Collector:** G1 Garbage Collector (default JVM settings)
 
 ---
