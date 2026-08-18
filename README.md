@@ -2,6 +2,9 @@
 
 This repository contains integration examples showcasing the capabilities and performance characteristics of the **Valix** compile-time validation framework in various Kotlin application environments.
 
+For the core compiler, annotation specifications, and runtime libraries, visit the main repository:
+👉 **[developersyndicate/valix](https://github.com/developersyndicate/valix)**
+
 ---
 
 ## 1. Spring Boot Integration Example (`spring-example`)
@@ -71,6 +74,27 @@ The `kmp-example` module showcases how Valix executes validations inside a multi
 To trigger the shared unit testing suites across all configured target runtimes, execute:
 ```bash
 ./gradlew :kmp-example:allTests
+```
+
+---
+
+## 7. Advanced Features Example (`advanced-example`)
+
+The `advanced-example` module showcases how to implement complex enterprise validation architectures using Valix:
+- **Custom Constraints:** Demonstrates custom validation rules via custom annotations linked to custom validator executors (e.g. `@PasswordStrength` evaluated by `PasswordStrengthValidator`).
+- **Nested Object Cascading:** Cascades validator executions down nested entity graphs and collection layers (e.g. `OrderRequest` -> `Address` -> `List<OrderItem>`) using `@Valid`.
+- **Hierarchical Path Resolution:** Maps nested errors to detailed JSON error paths (e.g., `shippingAddress.street` or `items[0].quantity`).
+
+### Running the Showcase Application
+Execute the standalone command-line driver to trigger advanced validations and see formatting:
+```bash
+./gradlew :advanced-example:run
+```
+
+### Running the Advanced Tests
+Trigger unit assertions:
+```bash
+./gradlew :advanced-example:test
 ```
 
 ---

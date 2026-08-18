@@ -37,3 +37,4 @@ replay_pid*
 /kmp-example/build
 *.lock
 *.hprof
+/advanced-example/build
