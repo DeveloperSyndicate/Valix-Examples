@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm")
     application
     id("com.google.devtools.ksp")
+    id("org.graalvm.buildtools.native") version "0.9.28"
 }
 
 java {
@@ -33,5 +34,27 @@ application {
 kotlin {
     sourceSets.main {
         kotlin.srcDir("build/generated/ksp/main/kotlin")
+    }
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "com.example.advanced.AppKt"
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+}
+
+graalvmNative {
+    binaries {
+        named("main") {
+            imageName.set("valix-advanced-native")
+            mainClass.set("com.example.advanced.AppKt")
+            buildArgs.addAll(
+                "--no-fallback",
+                "-J-Xmx1536m",    // Limit builder heap to 1.5GB
+                "--parallelism=2"  // Restrict build threads to 2 cores (minimum required by GraalVM)
+            )
+        }
     }
 }

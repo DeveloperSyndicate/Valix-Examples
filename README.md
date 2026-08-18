@@ -155,6 +155,18 @@ The test suite runs the shared validations successfully across all target runtim
 | **JavaScript** | Node.js (v24.10) | ✅ Success | **165.91 ns** | **6,250,000** |
 | **WebAssembly** | WasmJS Browser (Chrome Headless) | ✅ Success | **723.00 ns** | **1,388,888** |
 
+#### F. GraalVM Native Image Cold-Start Benchmarks (10 Run Average)
+
+Validates the startup execution characteristics of the `advanced-example` module when compiled into a standalone reflection-free Native Binary:
+
+| Execution Platform | Average Startup + Exec Time | Speed Improvement | Binary Size |
+| --- | --- | --- | --- |
+| **GraalVM Native Binary** | **94 ms** | **1.28x Faster** | **13.53 MB** |
+| JVM (Standard HotSpot Jar) | 120 ms | Baseline | 3.52 MB |
+
+> [!TIP]
+> GraalVM Native compilation traditionally requires complex reflection registry configurations (`reflect-config.json`) to register target entities validated by Hibernate / reflection-based validation libraries. Because Valix compile-time generated validators execute as direct, reflection-free Kotlin statements, it compiles natively with **zero configuration** and starts instantly.
+
 > [!NOTE]
 > Since Valix generates plain Kotlin validation statements directly at compile-time, it completely bypasses runtime annotation parsing, reflection lookup, and metadata caches. This provides massive performance benefits even under heavy parallel load.
 
@@ -176,5 +188,8 @@ Execute the following commands in your terminal from the repository root:
 
 # Run Ktor benchmark
 ./gradlew cleanTest :ktor-example:test --info
+
+# Run GraalVM Native Cold-Start Timing Benchmark
+./advanced-example/benchmark-native.sh
 
 ```
