@@ -33,3 +33,7 @@ replay_pid*
 /spring-example/build
 /android-example/build
 /ktor-example/build
+*.hprofs
+/kmp-example/build
+*.lock
+*.hprof
