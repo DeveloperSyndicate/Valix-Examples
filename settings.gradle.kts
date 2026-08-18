@@ -16,7 +16,7 @@ plugins {
 }
 rootProject.name = "Valix-Example"
 
-includeBuild("/Users/sanjay/Documents/VibeCode/Valix")
+includeBuild("../Valix")
 include(":spring-example")
 include(":micronaut-example")
 include(":android-example")

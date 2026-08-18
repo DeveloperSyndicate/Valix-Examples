@@ -10,8 +10,16 @@ jobs:
   build-and-test:
     runs-on: macos-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout Examples Repository
         uses: actions/checkout@v4
+        with:
+          path: Valix-Example
+
+      - name: Checkout Core Library Repository
+        uses: actions/checkout@v4
+        with:
+          repository: DeveloperSyndicate/Valix
+          path: Valix
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -24,9 +32,12 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          build-root-directory: Valix-Example
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
       - name: Build and Test All Modules
+        working-directory: Valix-Example
         run: ./gradlew test allTests --no-daemon
