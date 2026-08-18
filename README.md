@@ -1,51 +1,28 @@
 # Valix Integration Examples
 
-This repository contains integration examples showcasing the capabilities and performance characteristics of the **Valix** compile-time validation framework in various Kotlin application environments.
+[![Build Status](https://github.com/developersyndicate/valix-examples/actions/workflows/ci.yml/badge.svg)](https://github.com/developersyndicate/valix-examples/actions/workflows/ci.yml)
+
+Runnable examples showing how to integrate the **Valix** compile-time generated validation framework with popular Kotlin application environments.
 
 For the core compiler, annotation specifications, and runtime libraries, visit the main repository:
 👉 **[developersyndicate/valix](https://github.com/developersyndicate/valix)**
 
 ---
 
-## 1. Spring Boot Integration Example (`spring-example`)
+## 1. Quick Start
 
-The `spring-example` module contains a Spring Boot REST API demonstrating:
-- **Compile-Time Annotation Processing:** Using KSP (`valix-ksp`) to generate type-safe validator classes at compile-time instead of utilizing slow runtime reflection.
-- **Spring MVC Argument Resolution:** Automatically validating incoming `@RequestBody` controller parameters using the `@ValidValix` annotation.
-- **Unified Error Handling:** Utilizing Spring's `@ControllerAdvice` (`ValixControllerAdvice`) to capture validation exceptions and return formatted JSON error structures.
+Clone this repository and run the netty-based Ktor server example instantly:
 
----
-
-## 2. Micronaut Integration Example (`micronaut-example`)
-
-The `micronaut-example` module showcases how Valix integrates into modern cloud-native Microservices using Micronaut:
-- **AOP Interceptor Validation:** Demonstrating AOP-driven request body validation on controller actions using the `@ValixValidated` annotation.
-- **Dependency Injection Integration:** Resolving validators automatically at compile-time using Micronaut's dependency injection processor.
-
----
-
-## 3. Android Integration Example (`android-example`)
-
-The `android-example` module showcases how Valix provides extremely lightweight, fast validation in client-side mobile applications:
-- **Compose UI Integration:** Using Jetpack Compose dynamic form input validation with the `valix-compose` state utilities (e.g. `rememberValixForm`).
-- **Zero Reflection Overhead:** Ideal for Android environments where reflection overhead directly degrades app startup latency and UI response time.
-- **On-Device & Unit Benchmarking:** Includes a benchmark suite that runs both on-device (via Compose UI activity) and on-host JVM (via Gradle tests).
-
-## 5. Ktor Integration Example (`ktor-example`)
-
-The `ktor-example` module showcases how to integrate Valix compile-time validation with Ktor 3.x servers:
-- **Compile-Time Safety:** Bypasses reflection-based JSR-380 validation, generating pure Kotlin type-safe validator structures via KSP.
-- **Unified Clean Error Responses:** Converts validation results into structured REST responses returning a clean, flat list of error fields.
-- **Embedded Performance Benchmarks:** Contains an inline comparison benchmark comparing Valix's execution speed against Hibernate Validator.
-
-### Running the Ktor Server
-Start the Netty-based server locally (starts by default on port `8080`):
 ```bash
+git clone https://github.com/DeveloperSyndicate/Valix-Examples.git
+cd Valix-Examples
+
+# Start the Ktor REST server example
 ./gradlew :ktor-example:run
 ```
 
-### Testing the REST Endpoint
-Send a sample validation request containing invalid payload parameters:
+Once started, trigger a validation check by sending a payload containing invalid parameters:
+
 ```bash
 curl -X POST http://localhost:8080/register \
   -H "Content-Type: application/json" \
@@ -63,146 +40,43 @@ Response (Flat list of clean validation errors):
 
 ---
 
-## 6. Kotlin Multiplatform (KMP) Example (`kmp-example`)
+## 2. Choosing an Example
 
-The `kmp-example` module showcases how Valix executes validations inside a multiplatform project architecture:
-- **Shared Validation Logic:** Defines shared models and cross-platform validation routines in the `commonMain` source set.
-- **Multi-Target Integration:** Evaluates execution compatibility across `JVM`, `iOS (ARM64 & X64)`, `JavaScript (NodeJS & Browser)`, and `WebAssembly (WasmJS)`.
-- **Dynamic Programmatic Checks:** Utilizes the programmatic Kotlin DSL validation API (`valixDsl` from the `valix-runtime` package) to run checks dynamically on targets where static annotation processors are not natively configured.
+This repository contains dedicated integration modules designed to isolate learning contexts. The validation logic is generated at compile time (via KSP) and executed at runtime to avoid reflection overhead.
 
-### Running KMP Target Tests
-To trigger the shared unit testing suites across all configured target runtimes, execute:
-```bash
-./gradlew :kmp-example:allTests
-```
-
----
-
-## 7. Advanced Features Example (`advanced-example`)
-
-The `advanced-example` module showcases how to implement complex enterprise validation architectures using Valix:
-- **Custom Constraints:** Demonstrates custom validation rules via custom annotations linked to custom validator executors (e.g. `@PasswordStrength` evaluated by `PasswordStrengthValidator`).
-- **Nested Object Cascading:** Cascades validator executions down nested entity graphs and collection layers (e.g. `OrderRequest` -> `Address` -> `List<OrderItem>`) using `@Valid`.
-- **Hierarchical Path Resolution:** Maps nested errors to detailed JSON error paths (e.g., `shippingAddress.street` or `items[0].quantity`).
-
-### Running the Showcase Application
-Execute the standalone command-line driver to trigger advanced validations and see formatting:
-```bash
-./gradlew :advanced-example:run
-```
-
-### Running the Advanced Tests
-Trigger unit assertions:
-```bash
-./gradlew :advanced-example:test
-```
+| Target Environment | Example Module | Focus Showcase |
+| --- | --- | --- |
+| **Android / Compose** | [`:android-example`](file:///Users/sanjay/Documents/VibeCode/Valix-Example/android-example) | Jetpack Compose form state validation (`rememberValixForm`) |
+| **Ktor 3.x Server** | [`:ktor-example`](file:///Users/sanjay/Documents/VibeCode/Valix-Example/ktor-example) | REST API JSON validation pipeline and Ktor Netty server |
+| **Spring Boot 3.x** | [`:spring-example`](file:///Users/sanjay/Documents/VibeCode/Valix-Example/spring-example) | Auto-configuration parameter resolution (`@ValidValix`) |
+| **Micronaut** | [`:micronaut-example`](file:///Users/sanjay/Documents/VibeCode/Valix-Example/micronaut-example) | AOP-driven method execution validation interceptors |
+| **Kotlin Multiplatform**| [`:kmp-example`](file:///Users/sanjay/Documents/VibeCode/Valix-Example/kmp-example) | Shared model checks across JVM, iOS, JS, and WebAssembly |
+| **Advanced Features** | [`:advanced-example`](file:///Users/sanjay/Documents/VibeCode/Valix-Example/advanced-example) | Custom annotations, cascading validation (`@Valid`), and GraalVM |
 
 ---
 
-## 4. Real-Time Performance Benchmarks
+## 3. On-Device Android Showcase
 
-To illustrate the latency and throughput benefits of Valix compile-time generated validators over reflection-based JSR-380 validation (e.g. Hibernate Validator), real-time JUnit benchmarks are included in all example subprojects.
+The `:android-example` contains a Compose UI application displaying validation states and text field error mappings.
 
-### Benchmark Configuration
-- **Iterations per Run:** 100,000 payload validations (mix of valid and invalid request instances).
-- **Sequential Runs:** 10 sequential execution runs to compute an average time and throughput.
-- **Parallel Runs:** 10 concurrent threads executing 100,000 validations simultaneously (simulating multi-threaded workloads).
-
-### Performance Results
-
-#### A. Spring Boot Benchmark Results (10 Run Average)
-
-| Framework | Average Time (ms) | Throughput (ops/sec) | Speed Improvement |
-| --- | --- | --- | --- |
-| **Valix** | **22.50 ms** | **4,444,444** | **7.91x Faster** |
-| JSR-380 (Hibernate) | 178.00 ms | 561,797 | Baseline |
-
-* **Spring Parallel (10 Threads):** Valix was **3.34x Faster** with **13,157,894 ops/sec** vs JSR-380's **3,937,007 ops/sec**.
-
-#### B. Micronaut Benchmark Results (10 Run Average)
-
-| Framework | Average Time (ms) | Throughput (ops/sec) | Speed Improvement |
-| --- | --- | --- | --- |
-| **Valix** | **19.20 ms** | **5,208,333** | **9.44x Faster** |
-| JSR-380 (Hibernate) | 181.30 ms | 551,571 | Baseline |
-
-* **Micronaut Parallel (10 Threads):** Valix was **5.28x Faster** with **14,705,882 ops/sec** vs JSR-380's **2,785,515 ops/sec**.
-
-#### C. Android Benchmark Results (10 Run Average - JVM Host Mode)
-
-| Framework | Average Time (ms) | Throughput (ops/sec) | Speed Improvement |
-| --- | --- | --- | --- |
-| **Valix** | **20.90 ms** | **4,784,688** | **7.19x Faster** |
-| JSR-380 (Hibernate) | 150.30 ms | 665,335 | Baseline |
-
-* **Android Parallel (10 Threads):** Valix was **3.76x Faster** with **15,151,515 ops/sec** vs JSR-380's **4,032,258 ops/sec**.
-
-#### D. Ktor Benchmark Results (1,000,000 Run Average)
-
-| Framework | Average Time (ms) | Throughput (ops/sec) | Speed Improvement |
-| --- | --- | --- | --- |
-| **Valix** | **15.20 ms** | **6,578,947** | **6.85x Faster** |
-| JSR-380 (Hibernate) | 104.10 ms | 960,614 | Baseline |
-
-#### E. Kotlin Multiplatform (KMP) Verification Results
-
-The test suite runs the shared validations successfully across all target runtime platforms, executing **100,000 runs** of the programmatic validation suite to measure cross-platform overhead:
-
-| Platform Target | Runtime Environment | Build Status | Average Latency | Throughput (ops/sec) |
-| --- | --- | --- | --- | --- |
-| **JVM** | Adoptium OpenJDK 17 | ✅ Success | **400.89 ns** | **2,500,000** |
-| **iOS Simulator** | iOS Simulator (ARM64) | ✅ Success | **7,853.21 ns** | **127,388** |
-| **JavaScript** | Node.js (v24.10) | ✅ Success | **165.91 ns** | **6,250,000** |
-| **WebAssembly** | WasmJS Browser (Chrome Headless) | ✅ Success | **723.00 ns** | **1,388,888** |
-
-#### F. GraalVM Native Image Cold-Start Benchmarks (10 Run Average)
-
-Validates the startup execution characteristics of the `advanced-example` module when compiled into a standalone reflection-free Native Binary:
-
-| Execution Platform | Average Startup + Exec Time | Speed Improvement | Binary Size |
-| --- | --- | --- | --- |
-| **GraalVM Native Binary** | **94 ms** | **1.28x Faster** | **13.53 MB** |
-| JVM (Standard HotSpot Jar) | 120 ms | Baseline | 3.52 MB |
-
-> [!TIP]
-> GraalVM Native compilation traditionally requires complex reflection registry configurations (`reflect-config.json`) to register target entities validated by Hibernate / reflection-based validation libraries. Because Valix compile-time generated validators execute as direct, reflection-free Kotlin statements, it compiles natively with **zero configuration** and starts instantly.
-
-#### G. Nested Entity Graph Benchmarks (50,000 Run Average)
-
-Measures validation performance on complex, deeply nested models containing child collections (e.g. `OrderRequest` containing `Address` and `List<OrderItem>` targets):
-
-| Framework | Average Time (ms) | Throughput (ops/sec) | Speed Improvement |
-| --- | --- | --- | --- |
-| **Valix** | **19.40 ms** | **2,577,319** | **15.96x Faster** |
-| JSR-380 (Hibernate) | 309.60 ms | 161,498 | Baseline |
-
-> [!NOTE]
-> Since Valix generates plain Kotlin validation statements directly at compile-time, it completely bypasses runtime annotation parsing, reflection lookup, and metadata caches. This provides massive performance benefits even under heavy parallel load.
+![Android Registration UI Screen](images/android_screenshot.jpg)
 
 ---
 
-## Running the Benchmarks Locally
+## 4. Documentation & Benchmarks
 
-Execute the following commands in your terminal from the repository root:
+* **[Performance Benchmarks & Methodology](BENCHMARKS.md):** Detailed results comparing Valix against JSR-380 (Hibernate Validator) across JVM runtimes, parallel execution loads, and GraalVM Native environments.
+* **[Valix Core Repository](https://github.com/developersyndicate/valix):** Main compiler package, issues tracker, and release updates.
 
-```bash
-# Run Spring Boot benchmark
-./gradlew cleanTest :spring-example:test --info
+---
 
-# Run Micronaut benchmark
-./gradlew cleanTest :micronaut-example:test --info
+## 5. Compatibility Matrix
 
-# Run Android benchmark (JVM mode)
-./gradlew cleanTest :android-example:testDebugUnitTest --info
-
-# Run Ktor benchmark
-./gradlew cleanTest :ktor-example:test --info
-
-# Run Nested Object Graph Benchmark
-./gradlew cleanTest :advanced-example:test --info
-
-# Run GraalVM Native Cold-Start Timing Benchmark
-./advanced-example/benchmark-native.sh
-
-
-```
+| Technology | Supported Version |
+| --- | --- |
+| **Valix Library** | `1.0.4` |
+| **Kotlin Compiler**| `2.3.21` |
+| **KSP Processor** | `2.3.9` |
+| **Gradle** | `9.4.1` |
+| **Target Java Version**| JDK `17` |
+| **Android Gradle Plugin** | `9.1.1` |
