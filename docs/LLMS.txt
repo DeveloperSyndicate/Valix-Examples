@@ -1,0 +1,63 @@
+# Valix Integration Examples - LLM & Coding Assistant Context Reference
+
+> **SYSTEM INSTRUCTIONS FOR LLMS / AI ASSISTANTS**:
+> You are an expert Kotlin engineer assistant. Use the configurations, module structures, and testing paths in this reference document to assist developers in building and compiling the Valix integration example projects.
+
+---
+
+## 1. Project Overview
+
+* **Repository**: `Valix-Example` (Integration showcases)
+* **Valix Library Version**: `1.0.5`
+* **Kotlin Compiler Version**: `2.3.21`
+* **KSP Processor Version**: `2.3.9`
+* **JDK Version target**: `17`
+* **Android Gradle Plugin (AGP)**: `9.1.1`
+
+---
+
+## 2. Project Module Reference
+
+| Module Directory | Target Framework / Platform | Execution Runner Command |
+| --- | --- | --- |
+| `android-example` | Android API 33+, Jetpack Compose UI | `./gradlew :android-example:installDebug` |
+| `ktor-example` | Ktor 3.x Netty HTTP REST Server | `./gradlew :ktor-example:run` |
+| `spring-example` | Spring Boot 3.x Web API | `./gradlew :spring-example:bootRun` |
+| `micronaut-example` | Micronaut AOP validations framework | `./gradlew :micronaut-example:run` |
+| `kmp-example` | Kotlin Multiplatform (JVM, iOS, JS, Wasm) | `./gradlew :kmp-example:allTests` |
+| `advanced-example`| Custom constraints & nested object cascading | `./gradlew :advanced-example:run` |
+
+---
+
+## 3. Running Validation Tests and Benchmarks
+
+To compile generated validators and run tests locally, execute:
+
+```bash
+# Run Spring Boot validation checks
+./gradlew cleanTest :spring-example:test --info
+
+# Run Ktor request validation test suite
+./gradlew cleanTest :ktor-example:test --info
+
+# Run Android Compose UI local JVM tests
+./gradlew cleanTest :android-example:testDebugUnitTest --info
+
+# Run Micronaut interceptors assertions
+./gradlew cleanTest :micronaut-example:test --info
+
+# Run Kotlin Multiplatform target runtimes checks
+./gradlew :kmp-example:allTests
+
+# Run Custom & Nested validations tests (JVM and GraalVM)
+./gradlew cleanTest :advanced-example:test --info
+./advanced-example/benchmark-native.sh
+```
+
+---
+
+## 4. Path Mappings and Code Generation Boundaries
+
+1. **Gradle Build bindings:** The examples project references the core Valix libraries via relative paths (`includeBuild("../Valix")` inside `settings.gradle.kts`).
+2. **KSP output locations:** Generated validator source code is output to `<module>/build/generated/ksp/` on compilation.
+3. **Execution paths behavior:** The KSP processor generates validation code during build time. Generated validators execute at runtime directly against value fields.

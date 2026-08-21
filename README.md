@@ -79,7 +79,7 @@ The `:android-example` contains a Compose UI application displaying validation s
 
 | Technology | Supported Version |
 | --- | --- |
-| **Valix Library** | `1.0.4` |
+| **Valix Library** | `1.0.5` |
 | **Kotlin Compiler**| `2.3.21` |
 | **KSP Processor** | `2.3.9` |
 | **Gradle** | `9.4.1` |

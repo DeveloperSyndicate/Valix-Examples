@@ -47,4 +47,26 @@ class AdvancedValidationTest {
         assertTrue(error != null, "Should return a validation error for password field")
         assertTrue(error.message.contains("uppercase letter"), "Should supply the specified validation warning message")
     }
+
+    @Test
+    fun testRecursiveCollectionAndMapPaths() {
+        val invalidBoard = com.example.advanced.models.GameBoard(
+            listOf(
+                listOf(com.example.advanced.models.Cell("x"), com.example.advanced.models.Cell("")),
+                listOf(com.example.advanced.models.Cell("o"))
+            )
+        )
+        val boardResult = com.example.advanced.models.generated.GameBoardValidator.validate(invalidBoard)
+        assertFalse(boardResult.valid)
+        val boardErrors = boardResult.errors.map { it.path }.toSet()
+        assertTrue(boardErrors.contains("grid[0][1].value"), "Should capture nested list indexing: $boardErrors")
+
+        val invalidMap = com.example.advanced.models.MapConfig(
+            mapOf("user-1" to com.example.advanced.models.Cell(""))
+        )
+        val mapResult = com.example.advanced.models.generated.MapConfigValidator.validate(invalidMap)
+        assertFalse(mapResult.valid)
+        val mapErrors = mapResult.errors.map { it.path }.toSet()
+        assertTrue(mapErrors.contains("meta['user-1'].value"), "Should capture map key accessing: $mapErrors")
+    }
 }
