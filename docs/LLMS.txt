@@ -8,7 +8,7 @@
 ## 1. Project Overview
 
 * **Repository**: `Valix-Example` (Integration showcases)
-* **Valix Library Version**: `1.0.5`
+* **Valix Library Version**: `1.0.6`
 * **Kotlin Compiler Version**: `2.3.21`
 * **KSP Processor Version**: `2.3.9`
 * **JDK Version target**: `17`
