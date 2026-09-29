@@ -2,9 +2,9 @@ name: Examples CI Verification
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, development ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, development ]
 
 jobs:
   build-and-test:
@@ -35,8 +35,8 @@ jobs:
         with:
           build-root-directory: Valix-Example
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Accept Android SDK Licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
 
       - name: Build and Test All Modules
         working-directory: Valix-Example
